@@ -108,7 +108,7 @@ const RESOURCES_LINKS = [
     { id: 'dashboards', label: 'Documents and Literature', page: 'resources-tools' },
     { id: 'elearning', label: 'E-learning courses', page: 'resources-elearning' },
 
-
+    { id: 'unct', label: 'UNCT Dashboard', page: 'resources-unct' },
 
 
 
@@ -288,7 +288,7 @@ function MEAsMenu({
                 id="meas-menu"
                 className={`absolute p-2 left-0 top-full mt-2 z-50 ${PANEL_SHELL}
     ${open ? 'opacity-100 visible translate-y-0 pointer-events-auto' : 'opacity-0 invisible -translate-y-1 pointer-events-none'}`}
-                style={{ width: POPOVER_WIDTH_PX, left: -measAlignOffset }}
+                style={{ width: 650, left: -measAlignOffset }}
                 onPointerEnter={() => { if (hideTimerRef.current) { window.clearTimeout(hideTimerRef.current); hideTimerRef.current = null; } }}
                 onPointerLeave={() => scheduleClose(220)}
 
@@ -334,6 +334,7 @@ function MEAsMenu({
                                                 type="button"
                                                 onClick={() => onSelect?.(n.id)}
                                                 className="text-blue-700 hover:text-blue-800 hover:underline  leading-6 cursor-pointer text-left"
+                                                style={{paddingTop:"5px"}}
                                             >
                                                 {n.label}
                                             </button>
@@ -358,7 +359,8 @@ function MEAsMenu({
                                             <button
                                                 type="button"
                                                 onClick={() => onSelect?.(n.id)}
-                                                className="text-blue-700 hover:text-blue-800 hover:underline leading-6 cursor-pointer text-left "
+                                                className="text-blue-700 hover:text-blue-800 hover:underline leading-6 cursor-pointer text-left"
+                                                style={{paddingTop:"5px"}}
                                             >
                                                 {n.id === 'global' ? <strong>{n.label}</strong> : n.label}
                                             </button>
@@ -374,6 +376,8 @@ function MEAsMenu({
         </div>
     );
 }
+
+
 
 
 /* ---------------------------------------------
@@ -739,7 +743,7 @@ export default function Header({ currentPage, setCurrentPage }: HeaderProps) {
                                                         setCurrentPage(item.page);
                                                         setResourcesOpen(false);
                                                     }}
-                                                    className="w-full text-left px-3 py-2 rounded-md text-[15px] leading-snug hover:bg-gray-100 hover:text-cyan-700 focus:bg-cyan-100 focus:outline-none"
+                                                    className=" text-left px-3 py-2 rounded-md text-[15px] leading-snug hover:bg-gray-100 hover:text-cyan-700 focus:bg-cyan-100 focus:outline-none"
                                                 >
                                                     {item.label}
                                                 </button>
@@ -824,17 +828,116 @@ export default function Header({ currentPage, setCurrentPage }: HeaderProps) {
                                 />
                             </div>
 
+                            {/*<Select defaultValue="all">*/}
+                            {/*    <SelectTrigger className="w-48 h-12 bg-white/90 border-0 text-gray-900" data-size="lg">*/}
+                            {/*        <SelectValue />*/}
+                            {/*    </SelectTrigger>*/}
+                            {/*    <SelectContent>*/}
+                            {/*        <SelectItem value="all">All Categories</SelectItem>*/}
+                            {/*        <SelectItem value="treaties">Treaties</SelectItem>*/}
+                            {/*        <SelectItem value="parties">Parties</SelectItem>*/}
+                            {/*        <SelectItem value="cases">Cases</SelectItem>*/}
+                            {/*    </SelectContent>*/}
+                            {/*</Select>*/}
+
                             <Select defaultValue="all">
-                                <SelectTrigger className="w-48 h-12 bg-white/90 border-0 text-gray-900" data-size="lg">
+                                <SelectTrigger className="w-64 h-12 bg-white/90 border-0 text-gray-900" data-size="lg">
                                     <SelectValue />
                                 </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">All Categories</SelectItem>
-                                    <SelectItem value="treaties">Treaties</SelectItem>
-                                    <SelectItem value="parties">Parties</SelectItem>
-                                    <SelectItem value="cases">Cases</SelectItem>
+
+                                <SelectContent className="max-h-[28rem] px-6 py-4" style={{ width: "340px" }}>
+                                    {/* TREATIES */}
+                                    <SelectItem
+                                        value="_hdr_treaties"
+                                        className="text-lg tracking-wide text-gray-600 font-semibold cursor-default h-auto p-0 mb-1"
+                                    >
+                                        TREATIES
+                                    </SelectItem>
+                                    <div className="flex items-center justify-between border-b pt-1 pb-3">
+                                        <SelectItem value="treaty-texts" className="text-md h-auto p-0">Treaty texts</SelectItem>
+                                        <SelectItem value="decision-texts" className="text-md h-auto p-0">Decision texts</SelectItem>
+                                    </div>
+
+                                    {/* NATIONAL SUBMISSIONS */}
+                                    <SelectItem
+                                        value="_hdr_national"
+                                        className="text-md tracking-wide text-gray-600 font-semibold cursor-default h-auto p-0 mt-2 mb-1"
+                                    >
+                                        NATIONAL SUBMISSIONS
+                                    </SelectItem>
+                                    <div className="flex items-center justify-between border-b pt-1 pb-3">
+                                        <SelectItem value="national-plans" className="text-md h-auto p-0">National Plans</SelectItem>
+                                        <SelectItem value="national-reports" className="text-md h-auto p-0">National Reports</SelectItem>
+                                    </div>
+
+                                    {/* LAW AND CASES */}
+                                    <SelectItem
+                                        value="_hdr_law"
+                                        className="text-md tracking-wide text-gray-600 font-semibold cursor-default h-auto p-0 mt-2 mb-1"
+                                    >
+                                        LAW AND CASES
+                                    </SelectItem>
+                                    <div className="flex items-center justify-between border-b pt-1 pb-3">
+                                        <SelectItem value="legislation" className="text-md h-auto p-0">Legislation</SelectItem>
+                                        <SelectItem value="court-decisions" className="text-md h-auto p-0">Court Decisions</SelectItem>
+                                    </div>
+
+                                    {/* DOCUMENTS AND LITERATURE */}
+                                    <SelectItem
+                                        value="_hdr_docs"
+                                        className="text-md tracking-wide text-gray-600 font-semibold cursor-default h-auto p-0 mt-2 mb-1"
+                                    >
+                                        DOCUMENTS AND LITERATURE
+                                    </SelectItem>
+                                    <div className="flex items-center justify-between border-b pt-1 pb-3">
+                                        <SelectItem value="documents" className="text-md h-auto p-0">Documents</SelectItem>
+                                        <SelectItem value="literature" className="text-md h-auto p-0">Literature</SelectItem>
+                                    </div>
+
+                                    {/* NEWS AND EVENTS */}
+                                    <SelectItem
+                                        value="_hdr_news"
+                                        className="text-md tracking-wide text-gray-600 font-semibold cursor-default h-auto p-0 mt-2 mb-1"
+                                    >
+                                        NEWS AND EVENTS
+                                    </SelectItem>
+                                    <div className="flex items-center justify-between border-b pt-1 pb-3">
+                                        <SelectItem value="news" className="text-md h-auto p-0">News</SelectItem>
+                                        <SelectItem value="events" className="text-md h-auto p-0">Events</SelectItem>
+                                    </div>
+
+                                    {/* GOALS AND DECLARATIONS */}
+                                    <SelectItem
+                                        value="_hdr_goals"
+                                        className="text-md tracking-wide text-gray-600 font-semibold cursor-default h-auto p-0 mt-2 mb-1"
+                                    >
+                                        GOALS AND DECLARATIONS
+                                    </SelectItem>
+                                    <div className="flex items-center justify-between border-b pt-1 pb-3">
+                                        <SelectItem value="goals" className="text-md h-auto p-0">Goals</SelectItem>
+                                        <SelectItem value="declarations" className="text-md h-auto p-0">Declarations</SelectItem>
+                                    </div>
+
+                                    {/* CONTACTS HUB */}
+                                    <SelectItem
+                                        value="_hdr_contacts"
+                                        className="text-md tracking-wide text-gray-600 font-semibold cursor-default h-auto p-0 mt-2 mb-1"
+                                    >
+                                        CONTACTS HUB
+                                    </SelectItem>
+
+                                    {/* ALL CATEGORIES */}
+                                    <div className="mt-4">
+                                        <SelectItem value="all" className="text-md h-auto  py-2">
+                                            All Categories
+                                        </SelectItem>
+                                    </div>
                                 </SelectContent>
                             </Select>
+
+
+
+
                         </div>
                     </div>
                 )}
