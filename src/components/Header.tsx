@@ -923,7 +923,7 @@ export default function Header({ currentPage, setCurrentPage }: HeaderProps) {
                                         value="_hdr_contacts"
                                         className="text-md tracking-wide text-gray-600 font-semibold cursor-default h-auto p-0 mt-2 mb-1"
                                     >
-                                        CONTACTS HUB
+                                        MEAs CONTACTS HUB
                                     </SelectItem>
 
                                     {/* ALL CATEGORIES */}
