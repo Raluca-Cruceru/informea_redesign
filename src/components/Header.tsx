@@ -59,7 +59,9 @@ const RESOURCES_LINKS = [
     { id: 'glossary', label: 'Glossary', page: 'resources-glossary' },
     { id: 'toolkit', label: 'Negotiators Toolkit', page: 'toolkit' },
     { id: 'dashboards', label: 'Documents and Literature', page: 'resources-tools' },
+    { id: 'elearning', label: 'E-learning Courses', page: 'elearning' },
     { id: 'unct', label: 'UNCT Dashboard', page: 'resources-unct' },
+
 ];
 
 type NavLink = { id: string; label: string };
@@ -139,7 +141,7 @@ function MEAsMenu({
                     <div className="grid md:grid-cols-2 gap-6 px-8 py-4 text-left">
                         <div className="self-start">
                             {/* fixed header font */}
-                            <p className="text-[12px] uppercase tracking-wide text-gray-800 mb-2">Browse Treaties by Topic</p>
+                            <p className="text-[12px] uppercase tracking-wide text-gray-800 mb-2 font-bold">Browse Treaties by Topic</p>
                             <ul>
                                 {TOPIC_LINKS.map((n) => (
                                     <li key={n.id}>
@@ -155,7 +157,7 @@ function MEAsMenu({
                             </ul>
                         </div>
                         <div className="self-start">
-                            <p className="text-[12px] uppercase tracking-wide text-gray-800 mb-2">Browse Treaties by Region</p>
+                            <p className="text-[12px] uppercase tracking-wide text-gray-800 mb-2 font-bold">Browse Treaties by Region</p>
                             <ul>
                                 {REGION_LINKS.concat([{ id: 'global', label: 'Global Treaties' }]).map((n) => (
                                     <li key={n.id}>
@@ -417,7 +419,7 @@ export default function Header({ currentPage, setCurrentPage }: HeaderProps) {
                                     onPointerLeave={() => scheduleCloseResources(220)}
                                     style={{ width: POPOVER_WIDTH_PX, left: -resourcesAlignOffset }}
                                 >
-                                    <ul className="grid gap-y-2 p-6">
+                                    <ul className="grid md:grid-cols-3 gap-2 p-6">
                                         {RESOURCES_LINKS.map((item) => (
                                             <li key={item.id} className="min-w-0">
                                                 <button
