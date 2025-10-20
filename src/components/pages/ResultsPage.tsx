@@ -6,6 +6,98 @@ import { useSearch, CategoryKey} from '@/search-state';
 import { DEFAULT_FACETS } from '@/search-state'; // <-- add this import
 import { ChevronDown, X } from 'lucide-react';
 
+// keep only the ones we still use
+import { Tag as TagIcon, Globe2 } from "lucide-react";
+
+// Topic SVGs
+import biodiversity from "../../assets/biodiversity.svg";
+import chemicals from "../../assets/chemicals.svg";
+import climate from "../../assets/climate.svg";
+import governance from "../../assets/governance.svg";
+import agriculture from "../../assets/agriculture.svg";
+import oceans from "../../assets/oceans.svg";
+
+// topic → badge color classes
+const TOPIC_STYLES: Record<string, string> = {
+    "Biological Diversity": "bg-green-600 ",
+    "Chemicals and Waste": "bg-red-600",
+    "Marine and Freshwater": "bg-blue-800",
+    "Climate and Atmosphere": "bg-sky-500",
+    "Land and Agriculture": "bg-orange-500",
+    "Environmental Governance": "bg-green-800",
+};
+const TOPIC_COLORS: Record<string, string> = {
+    "Biological Diversity": "#65a30d",  // lime-600
+    "Chemicals and Waste": "#ea580c",   // orange-600
+    "Marine and Freshwater": "#0369a1", // sky-700
+    "Climate and Atmosphere": "#3b82f6",// blue-500
+    "Land and Agriculture": "#b45309",  // amber-700
+    "Environmental Governance": "#334155", // slate-700
+};
+
+
+const TOPIC_IMAGES: Record<string, any> = {
+    "Biological Diversity": biodiversity,
+    "Chemicals and Waste": chemicals,
+    "Marine and Freshwater": oceans,
+    "Climate and Atmosphere": climate,
+    "Land and Agriculture": agriculture,
+    "Environmental Governance": governance,
+};
+
+// short language labels (show these on buttons)
+const LANG_SHORT: Record<string, string> = {
+    english: "EN",
+    en: "EN",
+    french: "FR",
+    fr: "FR",
+    spanish: "ES",
+    es: "ES",
+    arabic: "AR",
+    ar: "AR",
+    russian: "RU",
+    ru: "RU",
+    chinese: "ZH",
+    zh: "ZH",
+};
+
+function Pill({
+                  children,
+                  className = "",
+              }: {
+    children?: React.ReactNode;
+    className?: string;
+}) {
+    // Convert to string if it's a primitive, then trim to check if it's effectively empty
+    const content =
+        typeof children === "string" ? children.trim() : children;
+
+    // Don't render if no visible content
+    if (
+        content === "" ||
+        content === null ||
+        content === undefined ||
+        content === false
+    ) {
+        return null;
+    }
+
+    return (
+        <span
+            className={`
+        inline-flex items-center justify-center
+        rounded-md border border-sky-200
+        bg-gray-100 px-2.5 py-1
+        text-md 
+        ${className}
+      `}
+            style={{ backgroundColor: TOPIC_COLORS[children] }}>
+      {children}
+    </span>
+    );
+}
+
+
 type ResultRow = {
     id: string;
     title: string;
@@ -19,26 +111,246 @@ type ResultRow = {
 };
 
 const MOCK: ResultRow[] = [
-    { id: 'r1', title: 'Sneak Preview – Basel Course', summary: 'Introductory module on Basel Convention basics.', year: 2025, category: 'documents', topics: ['Chemicals and Waste'], regions: ['Global'], documentTypes: ['Decision'], leoThesaurus: ['Conventions'] },
-    { id: 'r2', title: 'Relaunch: Basel/Stockholm/Rotterdam courses', summary: 'Cross-convention e-learning relaunch.', year: 2024, category: 'news', topics: ['Chemicals and Waste'], regions: ['Global'], documentTypes: ['Communication'], leoThesaurus: ['Conventions'] },
-    { id: 'r3', title: 'Strategic framework for Basel (2025–2031)', summary: 'Medium-term strategy framework.', year: 2025, category: 'decision-texts', topics: ['Chemicals and Waste'], regions: ['Global'], documentTypes: ['Decision'], leoThesaurus: ['COPs'] },
-    { id: 'r4', title: 'Relations between Basel & Bamako Secretariats', summary: 'Cooperation mechanisms.', year: 2023, category: 'decision-texts', topics: ['Chemicals and Waste'], regions: ['Africa','Global'], documentTypes: ['Decision'], leoThesaurus: ['Conventions'] },
-    { id: 'r5', title: 'Decision V/24: Transboundary Hazardous Wastes', summary: 'Controls on movement & disposal.', year: 1999, category: 'decision-texts', topics: ['Chemicals and Waste','Climate and Atmosphere'], regions: ['Global'], documentTypes: ['Decision'], leoThesaurus: ['Legislation'] },
-    { id: 'r6', title: 'Basel Convention Partnership Programme', summary: 'International cooperation incl. e-waste.', year: 2020, category: 'documents', topics: ['Chemicals and Waste'], regions: ['Global'], documentTypes: ['Decision'], leoThesaurus: ['Partnership Programme'] },
-    { id: 'r7', title: 'Logo of the Basel Convention', summary: 'Brand asset and usage guidance.', year: 2018, category: 'documents', topics: ['Chemicals and Waste'], regions: ['Global'], documentTypes: ['Other'], leoThesaurus: ['Soft law'] },
-    { id: 'r8', title: 'Court decision: ACME vs. Environmental Agency', summary: 'Illegal hazardous waste export.', year: 2016, category: 'court-decisions', topics: ['Environmental Governance','Chemicals and Waste'], regions: ['Europe'], documentTypes: ['Court decision'], leoThesaurus: ['Cases'] },
-    { id: 'r9', title: 'National Report – Basel (Kenya)', summary: 'Latest implementation report.', year: 2022, category: 'national-reports', topics: ['Chemicals and Waste'], regions: ['Africa'], documentTypes: ['National report'], leoThesaurus: ['National reports'] },
-    { id: 'r10', title: 'Climate co-benefits of waste reduction', summary: 'Peer-reviewed literature review.', year: 2021, category: 'literature', topics: ['Climate and Atmosphere','Chemicals and Waste'], regions: ['Global'], documentTypes: ['Literature'], leoThesaurus: ['Documents and Literature'] },
-    { id: 'r11', title: 'Sneak Preview – Basel Course', summary: 'Introductory module on Basel Convention basics.', year: 2025, category: 'documents', topics: ['Chemicals and Waste'], regions: ['Global'], documentTypes: ['Decision'], leoThesaurus: ['Conventions'] },
-    { id: 'r12', title: 'Relaunch: Basel/Stockholm/Rotterdam courses', summary: 'Cross-convention e-learning relaunch.', year: 2024, category: 'news', topics: ['Chemicals and Waste'], regions: ['Global'], documentTypes: ['Communication'], leoThesaurus: ['Conventions'] },
-    { id: 'r13', title: 'Strategic framework for Basel (2025–2031)', summary: 'Medium-term strategy framework.', year: 2025, category: 'decision-texts', topics: ['Chemicals and Waste'], regions: ['Global'], documentTypes: ['Decision'], leoThesaurus: ['COPs'] },
-    { id: 'r14', title: 'Relations between Basel & Bamako Secretariats', summary: 'Cooperation mechanisms.', year: 2023, category: 'decision-texts', topics: ['Chemicals and Waste'], regions: ['Africa','Global'], documentTypes: ['Decision'], leoThesaurus: ['Conventions'] },
-    { id: 'r15', title: 'Decision V/24: Transboundary Hazardous Wastes', summary: 'Controls on movement & disposal.', year: 1999, category: 'decision-texts', topics: ['Chemicals and Waste','Climate and Atmosphere'], regions: ['Global'], documentTypes: ['Decision'], leoThesaurus: ['Legislation'] },
-    { id: 'r16', title: 'Basel Convention Partnership Programme', summary: 'International cooperation incl. e-waste.', year: 2020, category: 'documents', topics: ['Chemicals and Waste'], regions: ['Global'], documentTypes: ['Decision'], leoThesaurus: ['Partnership Programme'] },
-    { id: 'r17', title: 'Logo of the Basel Convention', summary: 'Brand asset and usage guidance.', year: 2018, category: 'documents', topics: ['Chemicals and Waste'], regions: ['Global'], documentTypes: ['Other'], leoThesaurus: ['Soft law'] },
-    { id: 'r18', title: 'Court decision: ACME vs. Environmental Agency', summary: 'Illegal hazardous waste export.', year: 2016, category: 'court-decisions', topics: ['Environmental Governance','Chemicals and Waste'], regions: ['Europe'], documentTypes: ['Court decision'], leoThesaurus: ['Cases'] },
-    { id: 'r19', title: 'National Report – Basel (Kenya)', summary: 'Latest implementation report.', year: 2022, category: 'national-reports', topics: ['Chemicals and Waste'], regions: ['Africa'], documentTypes: ['National report'], leoThesaurus: ['National reports'] },
-    { id: 'r20', title: 'Climate co-benefits of waste reduction', summary: 'Peer-reviewed literature review.', year: 2021, category: 'literature', topics: ['Climate and Atmosphere','Chemicals and Waste'], regions: ['Global'], documentTypes: ['Literature'], leoThesaurus: ['Documents and Literature'] },
+    {
+        id: "r1",
+        title: "Report of the Meeting – MED POL Focal Points",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2025,
+        category: "decision-texts",
+        topics: ["Marine and Freshwater", "Chemicals and Waste"],
+        regions: ["Europe", "Global"],
+        documentTypes: ["Decision"],
+        leoThesaurus: ["Conventions"],
+    },
+    {
+        id: "r2",
+        title: "Operational Guidelines for Sustainable Agriculture",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2023,
+        category: "documents",
+        topics: ["Land and Agriculture", "Biological Diversity"],
+        regions: ["Africa", "Asia and the Pacific"],
+        documentTypes: ["Guideline"],
+        leoThesaurus: ["Soft law"],
+    },
+    {
+        id: "r3",
+        title: "National Action Plan on Climate Adaptation – Chile",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2022,
+        category: "national-reports",
+        topics: ["Climate and Atmosphere"],
+        regions: ["Latin America and the Caribbean"],
+        documentTypes: ["National report"],
+        leoThesaurus: ["National reports"],
+    },
+    {
+        id: "r4",
+        title: "DECISION OF THE MEETING - Fifteenth Meeting of the Contracting Parties to the Convention for the Protection of the Marine Environment and the Coastal Region of the Mediterranean and its Protocols; Guidelines for the Determination of Liability and Compensation for Damage resulting from Pollution of the Marine Environment in the Mediterranean Sea Area",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2021,
+        category: "decision-texts",
+        topics: ["Marine and Freshwater", "Chemicals and Waste"],
+        regions: ["Asia and the Pacific"],
+        documentTypes: ["Decision"],
+        leoThesaurus: ["COPs"],
+    },
+    {
+        id: "r5",
+        title: "Court ruling: People vs. OceanDump Inc.",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2019,
+        category: "court-decisions",
+        topics: ["Environmental Governance", "Marine and Freshwater"],
+        regions: ["North America"],
+        documentTypes: ["Court decision"],
+        leoThesaurus: ["Cases"],
+    },
+    {
+        id: "r6",
+        title: "Assessment of Forest Biodiversity Loss – Congo Basin",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2020,
+        category: "literature",
+        topics: ["Biological Diversity", "Land and Agriculture"],
+        regions: ["Africa"],
+        documentTypes: ["Assessment"],
+        leoThesaurus: ["Documents and Literature"],
+    },
+    {
+        id: "r7",
+        title: "UNEP Communication Strategy for Hazardous Waste",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2024,
+        category: "documents",
+        topics: ["Chemicals and Waste"],
+        regions: ["Global"],
+        documentTypes: ["Communication"],
+        leoThesaurus: ["Conventions"],
+    },
+    {
+        id: "r8",
+        title: "Agreement on Arctic Marine Ecosystems",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2018,
+        category: "treaty-texts",
+        topics: ["Marine and Freshwater", "Biological Diversity"],
+        regions: ["Polar: Arctic"],
+        documentTypes: ["Agreement"],
+        leoThesaurus: ["Treaties"],
+    },
+    {
+        id: "r9",
+        title: "Decision V/24: Transboundary Hazardous Wastes",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 1999,
+        category: "decision-texts",
+        topics: ["Chemicals and Waste", "Climate and Atmosphere"],
+        regions: ["Global"],
+        documentTypes: ["Decision"],
+        leoThesaurus: ["Legislation"],
+    },
+    {
+        id: "r10",
+        title: "Climate Co-benefits of Waste Reduction",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2021,
+        category: "literature",
+        topics: ["Climate and Atmosphere", "Chemicals and Waste"],
+        regions: ["Global"],
+        documentTypes: ["Literature"],
+        leoThesaurus: ["Documents and Literature"],
+    },
+    {
+        id: "r11",
+        title: "Sustainable Land Use Planning Toolkit",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2017,
+        category: "documents",
+        topics: ["Land and Agriculture", "Biological Diversity"],
+        regions: ["Europe", "Asia and the Pacific"],
+        documentTypes: ["Toolkit"],
+        leoThesaurus: ["Guidelines"],
+    },
+    {
+        id: "r12",
+        title: "Factsheet: Global Mercury Partnership",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2023,
+        category: "documents",
+        topics: ["Chemicals and Waste", "Environmental Governance"],
+        regions: ["Global"],
+        documentTypes: ["Factsheet"],
+        leoThesaurus: ["Partnership Programme"],
+    },
+    {
+        id: "r13",
+        title: "National Implementation Report – India",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2024,
+        category: "national-reports",
+        topics: ["Chemicals and Waste", "Environmental Governance"],
+        regions: ["Asia and the Pacific"],
+        documentTypes: ["National report"],
+        leoThesaurus: ["National reports"],
+    },
+    {
+        id: "r14",
+        title: "Concept Note: Climate Resilient Agriculture",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2025,
+        category: "documents",
+        topics: ["Land and Agriculture", "Climate and Atmosphere"],
+        regions: ["Africa"],
+        documentTypes: ["Concept note"],
+        leoThesaurus: ["Documents and Literature"],
+    },
+    {
+        id: "r15",
+        title: "Law on Biodiversity Conservation – Peru",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2015,
+        category: "legislation",
+        topics: ["Biological Diversity"],
+        regions: ["Latin America and the Caribbean"],
+        documentTypes: ["Law"],
+        leoThesaurus: ["Legislation"],
+    },
+    {
+        id: "r16",
+        title: "Decision on Atmospheric Monitoring",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2020,
+        category: "decision-texts",
+        topics: ["Climate and Atmosphere"],
+        regions: ["West Asia", "Europe"],
+        documentTypes: ["Decision"],
+        leoThesaurus: ["COPs"],
+    },
+    {
+        id: "r17",
+        title: "Regional Workshop on Marine Governance",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2021,
+        category: "events",
+        topics: ["Marine and Freshwater", "Environmental Governance"],
+        regions: ["West Asia"],
+        documentTypes: ["Meeting report"],
+        leoThesaurus: ["Conventions"],
+    },
+    {
+        id: "r18",
+        title: "National Waste Legislation – Japan",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2019,
+        category: "legislation",
+        topics: ["Chemicals and Waste"],
+        regions: ["Asia and the Pacific"],
+        documentTypes: ["Law"],
+        leoThesaurus: ["Legislation"],
+    },
+    {
+        id: "r19",
+        title: "UNEP Declaration on Environmental Justice",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2022,
+        category: "declarations",
+        topics: ["Environmental Governance"],
+        regions: ["Global"],
+        documentTypes: ["Declaration"],
+        leoThesaurus: ["Declarations"],
+    },
+    {
+        id: "r20",
+        title: "Policy Brief: Ocean Plastics and Circular Economy",
+        summary:
+            "Glossary term(s): Conventions, Environmental conservation, Reporting, Implementation, Marine ecosystems, Soft law, Appendices, Monitoring, Pollution, Climate change",
+        year: 2025,
+        category: "documents",
+        topics: ["Marine and Freshwater", "Chemicals and Waste"],
+        regions: ["Global"],
+        documentTypes: ["Policy brief"],
+        leoThesaurus: ["Documents and Literature"],
+    },
 ];
 
 
@@ -72,7 +384,7 @@ const TEXT_TYPES = [
 ];
 
 const TOPICS = [
-    'Biological diversity',
+    'Biological Diversity',
     'Chemicals and Waste',
     'Climate and Atmosphere',
     'Environmental Governance',
@@ -400,7 +712,7 @@ function FacetSection({
     return (
         <details className="group border-b border-slate-200 pb-2" open={defaultOpen}>
             <summary className="flex items-center justify-between py-3 cursor-pointer select-none">
-                <span className="text-sm font-semibold text-slate-800">{title}</span>
+                <span className="text-md font-semibold text-slate-800">{title}</span>
                 <ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" />
             </summary>
             <div className="pb-2">{children}</div>
@@ -453,7 +765,7 @@ function RadioRow({
                 checked={checked}
                 onChange={onChange}
             />
-            <span className="text-sm">{label}</span>
+            <span className="text-md">{label}</span>
         </label>
     );
 }
@@ -549,7 +861,7 @@ function LeftFilters() {
     };
 
     return (
-        <aside className="shrink-0 w-[280px] xl:w-[320px]" style={{minWidth:"100px", maxWidth:"200px"}}>
+        <aside className="shrink-0 w-[280px] xl:w-[320px]" style={{minWidth:"180px", maxWidth:"250px"}}>
             {/* Header */}
             <div className="flex items-center justify-between pb-4">
                 <h2 className="text-xl font-semibold text-slate-700">Filters</h2>
@@ -563,9 +875,9 @@ function LeftFilters() {
 
             {/* Active Filters */}
             <div className="mt-4 rounded-md border border-slate-200 bg-slate-50 p-3 pb-2">
-                <div className="text-sm font-semibold text-slate-600 mb-2">Active Filters</div>
+                <div className="text-md font-semibold text-slate-600 mb-2">Active Filters</div>
                 {chips.length === 0 ? (
-                    <div className="inline-flex items-center rounded-full border px-2 py-1 text-xs text-slate-600 bg-white">
+                    <div className="inline-flex items-center rounded-full border px-2 py-1 text-sm text-slate-600 bg-white">
                         Type: All
                     </div>
                 ) : (
@@ -573,7 +885,7 @@ function LeftFilters() {
                         {chips.map(chip => (
                             <span
                                 key={chip.key}
-                                className="inline-flex items-center gap-1 rounded-full bg-white border px-2 py-1 text-xs"
+                                className="inline-flex items-center gap-1 rounded-full bg-white border px-2 py-1 text-sm"
                             >
                 {chip.label}
                                 <button
@@ -581,7 +893,7 @@ function LeftFilters() {
                                     className="hover:text-red-600"
                                     onClick={chip.remove}
                                 >
-                  <X className="h-3.5 w-3.5" />
+                  <X className="text-xs" />
                 </button>
               </span>
                         ))}
@@ -590,7 +902,7 @@ function LeftFilters() {
             </div>
 
             {/* Sections (accordion) */}
-            <div className="mt-6 space-y-2">
+            <div className="mt-6 space-y-2 text-md">
                 {/* Related Treaties (single-select) */}
                 <FacetSection title="Related Treaties" defaultOpen>
                     {["All related treaties","Basel Convention","Stockholm Convention","Rotterdam Convention","Bamako Convention"].map(v => (
@@ -772,22 +1084,113 @@ function useFiltered() {
         });
     }, [state]);
 }
-
 function Card({ r }: { r: ResultRow }) {
-    return (
-        <div className="rounded-xl border bg-white p-4 hover:shadow-md transition-shadow">
-            <h3 className="text-xl font-semibold p-2">{r.title}</h3>
-            <p className="text-md text-gray-600 mt-1 p-2">{r.summary}</p>
-            <div className="flex flex-wrap gap-2 mt-3 p-2">
-                <span className="text-sm px-2 py-1 rounded bg-slate-100 border">{r.year}</span>
-                <span className="text-sm px-2 py-1 rounded bg-slate-100 border">{r.category}</span>
+    // mock downloads per language (replace with real links if you have them)
+    // e.g. [{lang:'en', href:'/foo_en.pdf'}, ...]
+    const downloads: { lang: string; href: string }[] = [
+        { lang: "en", href: `/${r.id}_en.pdf` },
+        { lang: "fr", href: `/${r.id}_fr.pdf` },
+        { lang: "es", href: `/${r.id}_es.pdf` },
+    ];
 
-                {r.topics.map(t => <span key={t} className="text-sm px-2 py-1 rounded bg-emerald-50 border">{t}</span>)}
-                <span className="text-sm px-2 py-1 rounded bg-slate-100 border">{r.regions}</span>
+    // image strip for topics (top-right)
+    const topicImgs = r.topics.map((t) => {
+        const img = TOPIC_IMAGES[t];
+        if (!img) return null;
+        const src = (img as any).src ?? img; // supports Next or Vite
+        return (
+            <span key={t} title={t} className="inline-flex items-center justify-center h-7 w-7 rounded-md border bg-white/80 backdrop-blur">
+            <img
+                key={t}
+                src={src}
+                alt={t}
+                title={t}
+                className="h-8 w-8 object-contain"
+            />
+            </span>
+        );
+    });
+
+    return (
+        <article className="group relative overflow-hidden rounded-xl border bg-white p-4 hover:shadow-md transition-shadow">
+            {/* topic symbol strip (top-right) */}
+            <div className="absolute right-3 top-3 hidden gap-2 text-slate-500 md:flex">
+                {topicImgs}
             </div>
-        </div>
+
+            <div className="flex gap-8">
+                {/* thumb */}
+                <div className="shrink-0 rounded-md border bg-slate-50 grid place-items-center p-4" style={{minWidth:"100px", maxHeight:"100px"}}>
+                    <Globe2 className="h-8 w-8 text-slate-400" />
+                </div>
+
+                {/* content */}
+                <div className="min-w-0 flex-1">
+                    {/* title */}
+                    <h3 className="text-xl font-semibold leading-snug text-sky-800 hover:underline pb-4" style={{fontSize:"19px"}}>
+                        {r.title}
+                    </h3>
+
+                    {/* pills row — order matches screenshot */}
+                    <div className="mt-3 flex flex-wrap gap-2 pb-3">
+                        {/* 1) document type (grey) */}
+                        {(r.documentTypes ?? []).slice(0, 1).map((d) => (
+                            <Pill key={d} className="bg-slate-200 text-slate-800" >{d}</Pill>
+                        ))}
+
+                        {/* 2) topics (colored) */}
+                        {r.topics.map((t) => (
+                            <Pill
+                                key={t}
+
+                                className={"text-white"}
+                            >
+                                {t}
+                            </Pill>
+                        ))}
+
+                        {/* 3) region (grey) — show first region like screenshot */}
+                        {r.regions?.[0] && (
+                            <Pill className="bg-slate-200 text-slate-800">
+                                {r.regions[0]}
+                            </Pill>
+                        )}
+
+                        <div className="flex items-center gap-2 text-slate-700">
+                            <TagIcon className="h-4 w-4 text-slate-500" />
+                            <span className="text-md">Doc Type</span>
+                        </div>
+                    </div>
+
+
+
+                    {/* summary (glossary terms in screenshot, using your summary) */}
+                    <p className="mt-2 text-[12px] leading-relaxed  text-gray-600 pb-4">
+                        {r.summary}
+                    </p>
+
+                    {/* downloads — buttons per language, short label */}
+                    <div className="mt-3 flex flex-wrap items-center gap-2">
+                        <span className="text-[12px] text-sky-700">Download:</span>
+                        {downloads.map(({ lang, href }) => (
+                            <a
+                                key={lang}
+                                href={href}
+                                className="inline-flex items-center rounded-md border border-sky-200 bg-sky-50 px-2.5 py-1 text-xs font-semibold text-sky-700 hover:bg-sky-100"
+                            >
+                                {LANG_SHORT[lang.toLowerCase()] ?? lang.toUpperCase()}
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* subtle divider like screenshot */}
+            <div className="mt-4 h-px bg-slate-200/70" />
+        </article>
     );
 }
+
 function SimplePager({
                          page,
                          total,

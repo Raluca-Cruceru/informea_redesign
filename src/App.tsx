@@ -36,6 +36,7 @@ import { SearchProvider } from './search-state';
 
 
 
+
 export default function App() {
     const [currentPage, setCurrentPage] = useState('home');
     const XIcon = (props) => (
@@ -375,6 +376,9 @@ export default function App() {
                 </footer>
             </main>
         </div>
+
+
         </SearchProvider>
+
     );
 }
