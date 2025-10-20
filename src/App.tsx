@@ -1,6 +1,6 @@
 import image_b3317a67a82acceac61c19bd7a0014d2781165eb from 'figma:asset/b3317a67a82acceac61c19bd7a0014d2781165eb.png';
 import { useState } from 'react';
-import {Facebook, Twitter, Linkedin, Youtube, Mail, Phone, MapPin, GraduationCap, Instagram} from 'lucide-react';
+import {Facebook, Twitter, Linkedin, Youtube, Mail, Phone, MapPin, GraduationCap, Instagram, X} from 'lucide-react';
 import Header from './components/Header';
 import LandingCarousel from './components/LandingCarousel';
 import EnvironmentalTopics from './components/EnvironmentalTopics';
@@ -31,11 +31,23 @@ import eclacLogo from './assets/ECLAC-logo.svg.png';
 import ecolexLogo from './assets/ecolex-logo.jpg';
 // @ts-ignore
 import eulogo from './assets/EU-logo.png';
+import ResultsPage from './components/pages/ResultsPage';
+import { SearchProvider } from './search-state';
+
 
 
 export default function App() {
     const [currentPage, setCurrentPage] = useState('home');
-
+    const XIcon = (props) => (
+        <svg
+            {...props}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+        >
+            <path d="M18.901 1.153h3.815l-8.34 9.53L23.25 22.847h-7.44l-5.833-7.616-6.667 7.616H.31l8.892-10.17L.75 1.153h7.558l5.263 6.932z" />
+        </svg>
+    );
 
     const renderContent = () => {
         switch (currentPage) {
@@ -57,6 +69,8 @@ export default function App() {
                 return <PartyExamplePage />;
             case 'treatypage':
                 return <TreatyPage />;
+            case 'results':
+                return <ResultsPage />;
             default:
                 return (
                     <>
@@ -158,6 +172,7 @@ export default function App() {
     );
 
     return (
+        <SearchProvider>
         <div className="min-h-screen bg-gray-50">
             <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
 
@@ -268,49 +283,18 @@ export default function App() {
 
                             <div className="border-t border-gray-600 mt-4 py-4 text-center text-xs text-gray-400"></div>
                             <h4 className="mb-6">ORGANIZATIONS</h4>
-                            <div className="flex gap-6 items-center">
-                                <OrgLogo
-                                    href="https://www.unep.org/"
-                                    src={unlogo}
-                                    label="UN"
-                                />
-                                <OrgLogo
-                                    href="https://www.unep.org/"
-                                    src={unepLogo}
-                                    label="UN Environment"
-                                />
-                                <OrgLogo
-                                    href="https://www.fao.org/"
-                                    src={faoLogo}
-                                    label="FAO"
-                                />
-                                <OrgLogo
-                                    href="https://www.unesco.org/"
-                                    src={unescoLogo}
-                                    label="UNESCO"
-                                />
-                                <OrgLogo
-                                    href="https://unece.org/"
-                                    src={uneceLogo}
-                                    label="UNECE"
-                                />
-                                <OrgLogo
-                                    href="https://www.cepal.org/en"
-                                    src={eclacLogo}
-                                    label="ECLAC"
-                                />
-                                {/* ECOLEX doesn’t have a widely hosted logo CDN; this uses a clean text fallback box that still behaves the same */}
-                                <OrgLogo
-                                    href="https://www.ecolex.org/"
-                                    src={ecolexLogo}
-                                    label="ECOLEX"
-                                />
-                                <OrgLogo href="https://www.ecolex.org/"
-                                src={eulogo}
-                                label="European Union"/>
+                            <div className="flex items-center justify-between">
+                                <div className="flex gap-6 items-center">
+                                    <OrgLogo href="https://www.unep.org/" src={unlogo} label="UN" />
+                                    <OrgLogo href="https://www.unep.org/" src={unepLogo} label="UN Environment" />
+                                    <OrgLogo href="https://www.fao.org/" src={faoLogo} label="FAO" />
+                                    <OrgLogo href="https://www.unesco.org/" src={unescoLogo} label="UNESCO" />
+                                    <OrgLogo href="https://unece.org/" src={uneceLogo} label="UNECE" />
+                                    <OrgLogo href="https://www.cepal.org/en" src={eclacLogo} label="ECLAC" />
+                                    <OrgLogo href="https://www.ecolex.org/" src={ecolexLogo} label="ECOLEX" />
+                                </div>
 
-
-
+                                <OrgLogo href="https://europa.eu/" src={eulogo} label="European Union" />
                             </div>
                         </div>
 
@@ -318,27 +302,27 @@ export default function App() {
 
 
                         {/* Contact and Social Media */}
-                        <div className="grid md:grid-cols-2 gap-8 mb-8 pt-4">
+                        <div className="grid md:grid-cols-3 gap-8 mb-8 pt-4">
                             <div>
                                 <h4 className="mb-4">Contact us</h4>
                                 <div className="space-y-3 text-sm">
                                     <div className="flex items-center space-x-2">
                                         <Mail className="w-4 h-4 text-gray-400" />
-                                        <a href="mailto:informea@unep.org" className="text-gray-300 hover:text-white transition-colors">
-                                            informea@unep.org
+                                        <a href="mailto:ikm.mea@gmail.com" className="text-gray-300 hover:text-white transition-colors">
+                                            ikm.mea@gmail.com
                                         </a>
                                     </div>
-                                    <div className="flex items-center space-x-2">
-                                        <Phone className="w-4 h-4 text-gray-400" />
-                                        <span className="text-gray-300">+254 20 762 1234</span>
-                                    </div>
-                                    <div className="flex items-start space-x-2">
-                                        <MapPin className="w-4 h-4 text-gray-400 mt-0.5" />
-                                        <span className="text-gray-300">
-                      UN Environment Programme<br />
-                      Nairobi, Kenya
-                    </span>
-                                    </div>
+                                    {/*<div className="flex items-center space-x-2">*/}
+                                    {/*    <Phone className="w-4 h-4 text-gray-400" />*/}
+                                    {/*    <span className="text-gray-300">+254 20 762 1234</span>*/}
+                                    {/*</div>*/}
+                    {/*                <div className="flex items-start space-x-2">*/}
+                    {/*                    <MapPin className="w-4 h-4 text-gray-400 mt-0.5" />*/}
+                    {/*                    <span className="text-gray-300">*/}
+                    {/*  UN Environment Programme<br />*/}
+                    {/*  Nairobi, Kenya*/}
+                    {/*</span>*/}
+                    {/*                </div>*/}
                                 </div>
                             </div>
 
@@ -349,18 +333,22 @@ export default function App() {
                                         <Linkedin className="w-5 h-5" />
                                     </a>
                                     <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                                        <Youtube className="w-5 h-5" />
+                                    </a>
+                                    <a href="#" className="text-gray-300 hover:text-white transition-colors">
                                         <Facebook className="w-5 h-5" />
                                     </a>
                                     <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                                        <Twitter className="w-5 h-5" />
-                                    </a>
-                                    <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                                        <Youtube className="w-5 h-5" />
+                                        <XIcon className="w-4 h-4" />
                                     </a>
                                     <a href="#" className="text-gray-300 hover:text-white transition-colors">
                                         <Instagram className="w-5 h-5" />
                                     </a>
                                 </div>
+                            </div>
+
+                            <div className="container m-auto border-2 border-white p-4 rounded-md">
+                                <h4>SUBSCRIBE TO THE INFORMEA NEWSLETTER</h4>
                             </div>
                         </div>
 
@@ -387,5 +375,6 @@ export default function App() {
                 </footer>
             </main>
         </div>
+        </SearchProvider>
     );
 }

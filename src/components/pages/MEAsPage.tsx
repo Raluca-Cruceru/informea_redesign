@@ -192,7 +192,7 @@ export default function MEAsPage({ currentPage, setCurrentPage }: TreatiesProps)
 
                         {/* Content */}
                         <div className="flex-1">
-                            <h3 className="text-[17px] md:text-lg font-semibold text-gray-900">{m.title}</h3>
+                            <h3 className="text-xl md:text-lg font-semibold text-gray-900">{m.title}</h3>
 
                             {/* tags row (topics + regions) */}
                             <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -235,7 +235,7 @@ export default function MEAsPage({ currentPage, setCurrentPage }: TreatiesProps)
 
     return (
         <div className="min-h-screen bg-[#f7f9fa]" style={{paddingLeft:"100px", paddingRight:"100px"}}>
-            <h2 className={"text-2xl max-w-5xl font-bold text-gray-700 text-center p-6 "}>All Treaties and Multilateral Environmental Agreements (MEAs)</h2>
+            <h2 className={"text-3xl max-w-5xl font-bold text-gray-700 text-center  p-8 "}>All Treaties and Multilateral Environmental Agreements (MEAs)</h2>
             <p className={"text-lg text-center"} style={{paddingLeft:"20px", paddingRight:"20px"}}>Discover what issue each environmental agreement seeks to address and how the conventions complement each other.
                 Here you will find environmental agreements': Summary, Text and Amendments,
                 Decisions and Resolutions, Ratification status.</p>
