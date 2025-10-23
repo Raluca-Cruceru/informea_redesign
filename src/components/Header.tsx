@@ -306,7 +306,7 @@ export default function Header({ currentPage, setCurrentPage }: HeaderProps) {
     return (
         <header
             ref={headerRef}
-            className="text-white shadow-lg"
+            className="text-white shadow-none"
             style={{
                 backgroundColor: 'var(--header-bg, rgb(0, 85, 137))',
                 paddingLeft: '100px',
@@ -316,7 +316,7 @@ export default function Header({ currentPage, setCurrentPage }: HeaderProps) {
         >
             <div>
                 {/* Top bar */}
-                <div className="flex items-center justify-between py-4 border-b border-white">
+                <div className="flex items-center justify-between py-4 ">
                     <div className="flex items-center space-x-8">
                         <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setCurrentPage('home')}>
                             <div className="flex items-center space-x-2">
@@ -464,6 +464,14 @@ export default function Header({ currentPage, setCurrentPage }: HeaderProps) {
                         </Button>
                     </div>
                 </div>
+                <header
+                    className="bg-[rgb(0,85,137)] text-white border-b"
+                    style={{
+                        borderColor: "rgba(255, 255, 255, 0.5)", // subtle 30% white
+                        boxShadow: "inset 0 -2px 0 rgba(255,255,255,0.25)",
+                    }}
+                >
+                </header>
 
                 {/* Hero Section */}
                 {(currentPage === 'home' || showSearch || currentPage === 'results') && (
