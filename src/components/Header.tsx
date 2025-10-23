@@ -308,7 +308,7 @@ export default function Header({ currentPage, setCurrentPage }: HeaderProps) {
             ref={headerRef}
             className="text-white shadow-lg"
             style={{
-                backgroundColor: 'var(--header-bg, rgb(0, 85, 137))',
+                backgroundColor: 'var(--header-bg, rgb(1, 85, 137))',
                 paddingLeft: '100px',
                 paddingRight: '100px',
                 boxShadow: 'inset 0 -1px 0 rgba(255,255,255,0.85)'
@@ -316,7 +316,7 @@ export default function Header({ currentPage, setCurrentPage }: HeaderProps) {
         >
             <div>
                 {/* Top bar */}
-                <div className="flex items-center justify-between py-4 border-b border-white">
+                <div className="flex items-center justify-between pt-4 pb-3">
                     <div className="flex items-center space-x-8">
                         <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setCurrentPage('home')}>
                             <div className="flex items-center space-x-2">
@@ -465,10 +465,11 @@ export default function Header({ currentPage, setCurrentPage }: HeaderProps) {
                     </div>
                 </div>
                 <div
-                    className="bg-[rgb(0,85,137)] text-white border-b"
+                    className="text-white border-b  "
                     style={{
-                        borderColor: "rgba(255, 255, 255, 0.5)", // subtle 30% white
-                        boxShadow: "inset 0 -1px 0 rgba(255,255,255,0.25)",
+                        borderColor: "rgba(255, 255, 255, 0.4)", // subtle 30% white
+                        marginLeft:"3px",
+                        marginRight:"3px",
                     }}
                 >
                 </div>
