@@ -6,9 +6,11 @@ import { ImageWithFallback } from './figma/ImageWithFallback';
 // @ts-ignore
 import negortool from "../assets/toolkit-visual_0.jpg";
 // @ts-ignore
-import globalgoalss from "../assets/goals.png";
+import globalgoalss from "../assets/SDGPage.png";
 // @ts-ignore
-import unct from "../assets/UNCT.png";
+import unct from "../assets/UNCT_news.png";
+
+
 
 interface LandingCarouselProps {
     setCurrentPage: (page: string) => void;
@@ -17,6 +19,7 @@ interface LandingCarouselProps {
 const carouselItems = [
   {
     id: 1,
+
     title: "Negotiator's Toolkit",
     subtitle: "Essential resources for environmental negotiations",
     description: "This comprehensive knowledge base will help you to understand and navigate multilateral environmental negotiations and meetings.",
